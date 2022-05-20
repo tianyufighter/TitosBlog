@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tianyufighter.myblog.dao.PersonRelationDao">
+    <resultMap id="BaseResult" type="com.tianyufighter.myblog.model.PersonRelation">
+        <id column="id" property="id"/>
+        <result column="my_name" property="myName"/>
+        <result column="friend_name" property="friendName"/>
+        <result column="my_portrait" property="myPortrait"/>
+        <result column="friend_portrait" property="friendPortrait"/>
+        <result column="message" property="message"/>
+        <result column="send_time" property="sendTime"/>
+    </resultMap>
+    <insert id="insertPerson" parameterType="PersonRelation" useGeneratedKeys="true" keyProperty="id">
+        insert into
+            personrelation(my_name, friend_name, my_portrait, friend_portrait, message, send_time)
+        values
+            (#{myName}, #{friendName}, #{myPortrait}, #{friendPortrait}, #{message}, #{sendTime});
+    </insert>
+    <select id="queryPerson" resultMap="BaseResult">
+        select * from personrelation where my_name=#{myName};
+    </select>
+    <select id="queryPersonByName" resultMap="BaseResult">
+        select * from personrelation where my_name=#{myName} and friend_name=#{friendName};
+    </select>
+    <delete id="deleteLiaison">
+        delete from personrelation where (my_name=#{myName} and friend_name=#{friendName}) or (my_name=#{friendName} and friend_name=#{myName});
+    </delete>
+    <update id="updateMessage">
+        update personrelation set message = #{message}, send_time = #{sendTime} where (my_name=#{myName} and friend_name=#{friendName}) or (my_name=#{friendName} and friend_name=#{myName});
+    </update>
+</mapper>

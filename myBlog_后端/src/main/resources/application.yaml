@@ -1,0 +1,29 @@
+server:
+  port: 80
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://39.108.117.49:3306/tianyufighterBlog?useUnicode=true&characterEncoding=utf-8&&useSSL=false
+    username: root
+    password: tianyufighter
+  mail:
+    username: 3121402314@qq.com
+    password: msbnmciqsmzcddda
+    port: 465
+    default-encoding: UTF-8
+    host: smtp.qq.com
+    properties:
+      mail:
+        smtp:
+          socketFactory:
+            class: javax.net.ssl.SSLSocketFactory
+  jackson:
+    time-zone: GMT+8
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.tianyufighter.myblog.model
+pagehelper:
+  helper-dialect: mysql
+  reasonable: false
+  support-methods-arguments: false

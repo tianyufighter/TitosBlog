@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tianyufighter.myblog.dao.CommentDao">
+    <resultMap id="BaseResult" type="com.tianyufighter.myblog.model.Comment">
+        <id column="id" property="id" jdbcType="NUMERIC"/>
+        <result column="author" property="author"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="label" property="label"/>
+        <result column="content" property="content"/>
+        <result column="release_time" property="releaseTime"/>
+    </resultMap>
+    <insert id="insertComment">
+        insert into
+            comment(author, title, label, username, content, release_time)
+        values
+            (#{author}, #{title}, #{label}, #{username}, #{content}, #{releaseTime});
+    </insert>
+    <select id = "queryAllCommentByInfo" resultMap="BaseResult">
+        select * from comment where author = #{author} and title = #{title} and label = #{label} order by id desc ;
+    </select>
+</mapper>

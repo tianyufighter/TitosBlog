@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tianyufighter.myblog.dao.ChatDao">
+    <resultMap id="BaseResult" type="com.tianyufighter.myblog.model.Chat">
+        <id column="id" property="id"/>
+        <result column="send_username" property="sendUsername"/>
+        <result column="receive_username" property="receiveUsername"/>
+        <result column="image_url" property="imageUrl"/>
+        <result column="message" property="message"/>
+        <result column="send_time" property="sendTime"/>
+        <result column="is_complete" property="isComplete"/>
+    </resultMap>
+    <insert id="insertChat" parameterType="Chat" useGeneratedKeys="true" keyProperty="id">
+        insert into
+            chat(send_username, receive_username, image_url, message, send_time, is_complete)
+        values
+            (#{sendUsername}, #{receiveUsername}, #{imageUrl}, #{message}, #{sendTime}, #{isComplete});
+    </insert>
+    <select id="queryAllChat" resultMap="BaseResult">
+        select * from chat where (send_username=#{sendUsername} and receive_username=#{receiveUsername}) or (send_username=#{receiveUsername} and receive_username=#{sendUsername});
+    </select>
+    <select id="queryChatByName" resultMap="BaseResult">
+        select * from chat where receive_username=#{receiveUsername} and is_complete = false and send_username=#{sendUsername};
+    </select>
+    <update id="updateChat">
+        update chat set is_complete=true where send_username = #{sendUsername} and receive_username=#{receiveUsername} and is_complete = false;
+    </update>
+    <delete id="deleteMessage">
+        delete from chat where (send_username=#{sendUsername} and receive_username=#{receiveUsername}) or (send_username=#{receiveUsername} and receive_username=#{sendUsername});
+    </delete>
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tianyufighter.myblog.dao.SearchDao">
+    <resultMap id="BaseResult" type="com.tianyufighter.myblog.model.Searchdata">
+        <id column="id" property="id" jdbcType="NUMERIC"/>
+        <result column="search_record" property="searchRecord"/>
+        <result column="num" property="num"/>
+    </resultMap>
+    <insert id="insertSearch" useGeneratedKeys="true">
+        insert into
+            searchdata(search_record, num)
+        values
+            (#{searchRecord}, 1);
+    </insert>
+    <update id = "updateSearch">
+        update searchdata set num=num+1 where search_record=#{searchRecord};
+    </update>
+    <select id="getHotSearch" resultMap="BaseResult">
+        select * from searchdata order by num desc limit 0, #{cnt};
+    </select>
+</mapper>

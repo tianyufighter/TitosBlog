@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.tianyufighter.myblog.dao.ArticleDao">
+    <resultMap id="BaseResult" type="com.tianyufighter.myblog.model.Article">
+        <id column="id" property="id" jdbcType="NUMERIC"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="title" property="title" jdbcType="VARCHAR"/>
+        <result column="label" property="label" jdbcType="VARCHAR"/>
+        <result column="content" property="content" jdbcType="VARCHAR"/>
+        <result column="create_time" property="createTime"/>
+        <result column="is_public" property="isPublic"/>
+        <result column="plain_text" property="plainText"/>
+        <result column="cover_photo" property="coverPhoto"/>
+    </resultMap>
+    <insert id="insertArticle" useGeneratedKeys="true" keyProperty="id">
+        insert into
+            article(username, title, label, content, create_time, is_public, plain_text)
+        values
+        (#{username}, #{title}, #{label}, #{content}, #{createTime}, #{isPublic},#{plainText});
+    </insert>
+    <select id="getAllPublicArticle" resultMap="BaseResult">
+        select * from article where is_public = 1;
+    </select>
+    <update id = "insertCoverPhoto">
+        update article set cover_photo=#{coverPhoto} where id = #{id};
+    </update>
+    <select id="getIdByUsernameAndTitle" resultType="int">
+        select id from article where username=#{username} and title=#{title} and label=#{label};
+    </select>
+    <select id="fuzzyQueryArticle" resultMap="BaseResult">
+        select * from article
+        <where>
+            <if test="value != null and value != ''">
+                and title like "%"#{value}"%"
+            </if>
+        </where>
+    </select>
+    <select id="queryCollectArticle" resultMap="BaseResult">
+        select * from article where id in (select article_id from collect where username = #{username} and is_love = 1);
+    </select>
+    <select id="queryOwnArticle" resultMap="BaseResult">
+        select * from article where username = #{username} and is_public = #{isPublic};
+    </select>
+    <delete id="deleteArticleById">
+        delete from article where id = #{id};
+    </delete>
+</mapper>
